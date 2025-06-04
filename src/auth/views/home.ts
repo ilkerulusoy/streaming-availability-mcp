@@ -96,7 +96,7 @@ export function generateHomePage(config: HomePageConfig = {}, user?: HomePageUse
                         <button onclick="logout()" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors duration-200 font-medium">
                             Sign Out
                         </button>
-                        <a href="/me" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors duration-200 font-medium inline-block">
+                        <a href="/profile" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors duration-200 font-medium inline-block">
                             Profile
                         </a>
                     </div>

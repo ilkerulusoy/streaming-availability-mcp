@@ -10,7 +10,8 @@ This boilerplate provides everything you need to build production-ready MCP serv
 - **🗄️ PostgreSQL Integration** - Full database schema with user management and OAuth tokens
 - **⚡ Cloudflare Workers** - Serverless deployment with global edge distribution
 - **🛠️ MCP Tools Framework** - Modular tool system with user context
-- **🎨 Beautiful UI** - Responsive login/registration pages
+- **🔌 Custom Routes Framework** - Easy-to-use system for adding REST API endpoints
+- **🎨 Beautiful UI** - Responsive login/registration pages with customizable consent screen
 - **🔒 Security First** - JWT tokens, bcrypt hashing, PKCE support
 - **📱 Mobile Ready** - Works on desktop, web, and mobile MCP clients
 - **🔧 Developer Friendly** - TypeScript, hot reload, comprehensive error handling
@@ -22,6 +23,130 @@ This boilerplate provides everything you need to build production-ready MCP serv
 - `personalGreeting` - Personalized user greetings
 - `generateImage` - AI image generation
 - `getUserStats` - User statistics and analytics
+
+## ⚡ Quick Start from index.ts
+
+**Everything starts from `src/index.ts`** - this is your main configuration file where you can easily:
+
+### 🛠️ Register MCP Tools
+```typescript
+// Register all MCP tools with one line each
+backend
+  .registerTool(registerMeTool)
+  .registerTool(registerGreetingTool)
+  .registerTool(registerAddTool)
+  .registerTool(registerGenerateImageTool);
+```
+
+### 🔌 Add Custom REST API Endpoints
+```typescript
+// Public endpoints (no authentication required)
+backend
+  .route('GET', '/api/ping', (c) => {
+    return c.json({ message: 'pong', timestamp: new Date().toISOString() });
+  })
+  .route('POST', '/api/echo', async (c) => {
+    const body = await c.req.json();
+    return c.json({ echo: body, timestamp: new Date().toISOString() });
+  });
+
+// Protected endpoints (OAuth token required)
+backend
+  .authRoute('GET', '/api/profile', (c, userContext, env) => {
+    return c.json({
+      message: 'User profile data',
+      user: userContext,
+      timestamp: new Date().toISOString()
+    });
+  })
+  .authRoute('POST', '/api/user/settings', async (c, userContext, env) => {
+    const settings = await c.req.json();
+    return c.json({
+      message: 'Settings updated successfully',
+      userId: userContext.userId,
+      settings,
+      timestamp: new Date().toISOString()
+    });
+  });
+```
+
+### 🎨 Customizable Consent Screen
+
+The OAuth consent screen is **fully customizable** with pure HTML, CSS, and JavaScript located in `src/auth/views/consent.ts`. Features include:
+
+- **🌙 Dark/Light Mode Toggle** - Automatic system preference detection with manual override
+- **📱 Responsive Design** - Mobile-first design with Tailwind CSS
+- **🎨 Custom Branding** - Easy logo, colors, and styling customization
+- **⚡ Real-time Updates** - JavaScript-powered consent flow with loading states
+- **🔒 Security Features** - CSRF protection and secure form handling
+
+**Customize the consent screen:**
+```typescript
+// In src/auth/views/consent.ts - modify the generateConsentPage function
+export function generateConsentPage(data: ConsentPageData, config: ConsentPageConfig = {}) {
+  const {
+    title = "Your Custom Title",           // ← Customize title
+    subtitle = "Your custom subtitle",     // ← Customize subtitle  
+    logoUrl = "/your-logo.png",           // ← Add your logo
+    brandColor = "purple"                 // ← Change brand color
+  } = config;
+  
+  // Full HTML/CSS/JS customization available in the template string
+  return `<!DOCTYPE html>...`;
+}
+```
+
+The consent screen includes:
+- Application info display with logos
+- User profile information
+- Granular permission scopes
+- Terms of Service and Privacy Policy links
+- Beautiful animations and transitions
+- Error handling and loading states
+
+## 🔌 Custom Routes Framework
+
+This boilerplate includes a powerful **custom routes framework** that makes it easy to add REST API endpoints alongside your MCP tools:
+
+### Public Routes (No Authentication)
+```typescript
+backend.route('GET', '/api/status', (c) => {
+  return c.json({ status: 'operational', version: '1.0.0' });
+});
+
+backend.route('POST', '/api/webhook', async (c) => {
+  const payload = await c.req.json();
+  // Process webhook
+  return c.json({ received: true });
+});
+```
+
+### Protected Routes (OAuth Required)
+```typescript
+backend.authRoute('GET', '/api/user/dashboard', (c, userContext, env) => {
+  // userContext contains: { userId, name, username, email, scopes }
+  return c.json({
+    welcomeMessage: `Hello ${userContext.name}!`,
+    userStats: { /* ... */ }
+  });
+});
+
+backend.authRoute('PUT', '/api/user/profile', async (c, userContext, env) => {
+  const updates = await c.req.json();
+  // Update user profile in database
+  return c.json({ success: true });
+});
+```
+
+### Framework Features
+- **🔒 Automatic Authentication** - Protected routes get user context automatically
+- **📝 Type Safety** - Full TypeScript support with proper typing
+- **🌐 HTTP Methods** - Support for GET, POST, PUT, DELETE, PATCH
+- **📊 Request Handling** - Easy access to headers, body, query params
+- **🔄 Response Helpers** - JSON, HTML, redirect, and custom responses
+- **⚡ Performance** - Built on Hono framework for maximum speed
+
+This makes it easy to create complete applications with both MCP tools and traditional REST APIs!
 
 ## 📋 Prerequisites
 

@@ -11,8 +11,8 @@
 		"nodejs_compat"
 	],
 	"vars": {
-		"JWT_SECRET": "<your-jwt-secret>",
-		"COOKIE_ENCRYPTION_KEY": "<your-cookie-encryption-key>"
+		"JWT_SECRET": "your-super-secret-jwt-key-change-this-in-production",
+		"COOKIE_ENCRYPTION_KEY": "12345678901234567890123456789012"
 	},
 	"ai": {
 		"binding": "AI"
@@ -20,7 +20,7 @@
 	"hyperdrive": [
 		{
 			"binding": "HYPERDRIVE",
-			"id": "<your-hyperdrive-id>"
+			"id": "320f1361655a4ce2971119edc3317ebf"
 		}
 	],
 	"observability": {
