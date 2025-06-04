@@ -590,7 +590,7 @@ oauthApp.post("/oauth/introspect", async (c) => {
 });
 
 // OAuth 2.0 Authorization Server Metadata (RFC 8414)
-oauthApp.get("/.well-known/oauth-authorization-server", async (c) => {
+oauthApp.all("/.well-known/oauth-authorization-server", async (c) => {
   const origin = new URL(c.req.url).origin;
   const baseUrl = origin.includes('localhost') ? origin : origin.replace("http://", "https://");
   
