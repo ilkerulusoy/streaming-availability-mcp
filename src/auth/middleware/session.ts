@@ -3,6 +3,8 @@ import { verify } from "hono/jwt";
 import { Context, Next } from "hono";
 import { createOAuth2Server } from "../oauth2";
 import OAuth2Server from '@node-oauth/oauth2-server';
+import { DatabaseService } from '../../database';
+import { getDatabaseConnectionString } from '../../database';
 
 export interface SessionUser {
   userId: string;
@@ -59,7 +61,7 @@ export async function sessionMiddleware(c: Context, next: Next) {
     const authHeader = c.req.header('Authorization');
     if (authHeader && authHeader.startsWith('Bearer ')) {
       const token = authHeader.substring(7);
-      const user = await authenticateOAuthToken(token, c.env.HYPERDRIVE.connectionString);
+      const user = await authenticateOAuthToken(token, getDatabaseConnectionString(c.env));
       
       if (user) {
         c.set('user', user);

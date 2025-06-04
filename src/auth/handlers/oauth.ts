@@ -6,6 +6,7 @@ import { generateConsentPage } from "../views/consent";
 import { getCurrentUser } from "../middleware/session";
 import { OAuth2Model } from "../oauth2";
 import { sessionMiddleware } from "../middleware/session";
+import { getDatabaseConnectionString } from '../../database';
 
 // Helper function to redirect to login with OAuth state
 function redirectToLogin(request: Request, oauthReqInfo: any, headers: Record<string, string> = {}) {
@@ -60,7 +61,7 @@ oauthApp.get("/oauth/authorize", async (c) => {
   }
 
   // Look up client in our database
-  const db = new DatabaseService(c.env.HYPERDRIVE.connectionString);
+  const db = new DatabaseService(getDatabaseConnectionString(c.env));
   await db.connect();
 
   try {
@@ -156,7 +157,7 @@ oauthApp.post("/oauth/consent", async (c) => {
 
     if (action === 'approve') {
       // User approved consent, create authorization code
-      const db = new DatabaseService(c.env.HYPERDRIVE.connectionString);
+      const db = new DatabaseService(getDatabaseConnectionString(c.env));
       await db.connect();
 
       try {
@@ -167,7 +168,7 @@ oauthApp.post("/oauth/consent", async (c) => {
         }
 
         // Create OAuth2 model instance
-        const oauth2Model = new OAuth2Model(c.env.HYPERDRIVE.connectionString);
+        const oauth2Model = new OAuth2Model(getDatabaseConnectionString(c.env));
         
         // Create authorization code using OAuth2 model
         const authCode = oauth2Model.generateAuthorizationCode(
@@ -231,7 +232,7 @@ oauthApp.post("/oauth/consent", async (c) => {
 // OAuth Authorization POST endpoint - handles user consent after login
 oauthApp.post("/oauth/authorize", async (c) => {
   try {
-    const oauth2Server = createOAuth2Server(c.env.HYPERDRIVE.connectionString);
+    const oauth2Server = createOAuth2Server(getDatabaseConnectionString(c.env));
     
     // Get form data
     const formData = await c.req.formData();
@@ -264,7 +265,7 @@ oauthApp.post("/oauth/authorize", async (c) => {
             const userId = request.body.user_id;
             if (!userId) return null;
 
-            const db = new DatabaseService(c.env.HYPERDRIVE.connectionString);
+            const db = new DatabaseService(getDatabaseConnectionString(c.env));
             await db.connect();
             try {
               const user = await db.getUserById(userId);
@@ -337,7 +338,7 @@ oauthApp.post("/oauth/applications", async (c) => {
       }
     }
 
-    const db = new DatabaseService(c.env.HYPERDRIVE.connectionString);
+    const db = new DatabaseService(getDatabaseConnectionString(c.env));
     await db.connect();
 
     try {
@@ -382,7 +383,7 @@ oauthApp.post("/oauth/applications", async (c) => {
 // List OAuth applications endpoint
 oauthApp.get("/oauth/applications", async (c) => {
   try {
-    const db = new DatabaseService(c.env.HYPERDRIVE.connectionString);
+    const db = new DatabaseService(getDatabaseConnectionString(c.env));
     await db.connect();
 
     try {
@@ -416,7 +417,7 @@ oauthApp.get("/oauth/applications", async (c) => {
 // OAuth Token endpoint
 oauthApp.post("/oauth/token", async (c) => {
   try {
-    const oauth2Server = createOAuth2Server(c.env.HYPERDRIVE.connectionString);
+    const oauth2Server = createOAuth2Server(getDatabaseConnectionString(c.env));
     
     // Get form data
     const formData = await c.req.formData();
@@ -496,7 +497,7 @@ oauthApp.post("/oauth/revoke", async (c) => {
     }
 
     // Use our database service directly for token revocation
-    const db = new DatabaseService(c.env.HYPERDRIVE.connectionString);
+    const db = new DatabaseService(getDatabaseConnectionString(c.env));
     await db.connect();
     
     try {
@@ -546,7 +547,7 @@ oauthApp.post("/oauth/introspect", async (c) => {
 
     try {
       // Try to get access token info
-      const db = new DatabaseService(c.env.HYPERDRIVE.connectionString);
+      const db = new DatabaseService(getDatabaseConnectionString(c.env));
       await db.connect();
       
       try {

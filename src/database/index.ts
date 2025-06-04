@@ -2,6 +2,26 @@ import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
 import { Client } from 'pg';
 
+// Centralized database connection string management
+export function getDatabaseConnectionString(env: any): string {
+  // For local development with Wrangler + Hyperdrive
+  if (env.WRANGLER_HYPERDRIVE_LOCAL_CONNECTION_STRING_HYPERDRIVE) {
+    return env.WRANGLER_HYPERDRIVE_LOCAL_CONNECTION_STRING_HYPERDRIVE;
+  }
+  
+  // Check for Hyperdrive in production (Cloudflare Workers)
+  if (env.HYPERDRIVE?.connectionString) {
+    return env.HYPERDRIVE.connectionString;
+  }
+  
+  // Fallback to direct DATABASE_URL for other environments
+  if (env.DATABASE_URL) {
+    return env.DATABASE_URL;
+  }
+  
+  throw new Error('No database connection string available. For local development with Hyperdrive, set WRANGLER_HYPERDRIVE_LOCAL_CONNECTION_STRING_HYPERDRIVE. For other environments, set DATABASE_URL or configure HYPERDRIVE.');
+}
+
 export interface User {
   id: string;
   username: string;

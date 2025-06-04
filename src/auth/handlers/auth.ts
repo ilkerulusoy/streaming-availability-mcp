@@ -4,6 +4,7 @@ import { sign } from "hono/jwt";
 import { CreateUserData, DatabaseService, LoginData } from "../../database";
 import { loginPageHTML, registerPageHTML } from "../views";
 import { getCurrentUser } from "../middleware/session";
+import { getDatabaseConnectionString } from '../../database';
 
 const authApp = new Hono<{ Bindings: Env }>();
 
@@ -41,7 +42,7 @@ authApp.post("/login", async (c) => {
       return c.json({ message: "Username and password are required" }, 400);
     }
 
-    const db = new DatabaseService(c.env.HYPERDRIVE.connectionString);
+    const db = new DatabaseService(getDatabaseConnectionString(c.env));
     await db.connect();
 
     try {
@@ -154,7 +155,7 @@ authApp.post("/register", async (c) => {
       return c.json({ message: "Password must be at least 6 characters long" }, 400);
     }
 
-    const db = new DatabaseService(c.env.HYPERDRIVE.connectionString);
+    const db = new DatabaseService(getDatabaseConnectionString(c.env));
     await db.connect();
 
     try {
@@ -185,7 +186,7 @@ authApp.post("/register", async (c) => {
 // Initialize database endpoint (for setup)
 authApp.post("/init-db", async (c) => {
   try {
-    const db = new DatabaseService(c.env.HYPERDRIVE.connectionString);
+    const db = new DatabaseService(getDatabaseConnectionString(c.env));
     await db.connect();
     
     try {
