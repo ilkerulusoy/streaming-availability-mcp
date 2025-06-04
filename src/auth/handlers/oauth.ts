@@ -608,4 +608,22 @@ oauthApp.all("/.well-known/oauth-authorization-server", async (c) => {
   });
 });
 
+// OAuth 2.0 Protected Resource Metadata (RFC 8707)
+oauthApp.all("/.well-known/oauth-protected-resource", async (c) => {
+  const origin = new URL(c.req.url).origin;
+  const baseUrl = origin.includes('localhost') ? origin : origin.replace("http://", "https://");
+  
+  return c.json({
+    resource: baseUrl,
+    authorization_servers: [baseUrl],
+    protected_resources: [
+      {
+        resource_uri: `${baseUrl}/mcp`,
+        scopes: ["read", "write"],
+        description: "Model Context Protocol endpoint for AI tool access"
+      }
+    ]
+  });
+});
+
 export { oauthApp };

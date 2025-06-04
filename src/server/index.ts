@@ -268,7 +268,9 @@ export class McpBackend {
         mcp: '/mcp',
         oauth_authorize: '/oauth/authorize',
         oauth_token: '/oauth/token',
-        oauth_metadata: '/.well-known/oauth-authorization-server'
+        oauth_metadata: '/.well-known/oauth-authorization-server',
+        oauth_protected_resource: '/.well-known/oauth-protected-resource',
+        jwks: '/.well-known/jwks.json'
       },
       tools: this.toolRegistrations.length
     });
