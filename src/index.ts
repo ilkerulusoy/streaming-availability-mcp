@@ -4,6 +4,8 @@ import {
   registerGreetingTool,
   registerAddTool,
   registerGenerateImageTool,
+  registerSearchTool,
+  registerFetchTool,
 } from "./tools";
 
 // Create the MCP server framework
@@ -17,7 +19,10 @@ backend
   .registerTool(registerMeTool)
   .registerTool(registerGreetingTool)
   .registerTool(registerAddTool)
-  .registerTool(registerGenerateImageTool);
+  .registerTool(registerGenerateImageTool)
+  // OpenAI compatible tools
+  .registerTool(registerSearchTool)
+  .registerTool(registerFetchTool);
 
 // Register custom static routes (no authentication required)
 backend
