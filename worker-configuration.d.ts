@@ -8,6 +8,10 @@ declare namespace Cloudflare {
 		COOKIE_ENCRYPTION_KEY: string;
 		HYPERDRIVE: Hyperdrive;
 		AI: Ai;
+		STRIPE_SECRET_KEY: string;
+		STRIPE_PRICE_ID: string;
+		BASE_URL: string;
+		STRIPE_WEBHOOK_SECRET: string;
 	}
 }
 interface Env extends Cloudflare.Env {}

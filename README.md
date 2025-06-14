@@ -1,6 +1,6 @@
 # MCP Server Boilerplate with OAuth & PostgreSQL
 
-A complete boilerplate for building remote Model Context Protocol (MCP) servers on Cloudflare Workers with custom OAuth authentication and PostgreSQL database integration.
+A complete boilerplate for building remote Model Context Protocol (MCP) servers on Cloudflare Workers with custom OAuth authentication, PostgreSQL database integration, and Stripe-powered paid tools.
 
 ## 🚀 What You Get
 
@@ -8,6 +8,7 @@ This boilerplate provides everything you need to build production-ready MCP serv
 
 - **🔐 Complete OAuth 2.1 Provider** - Custom OAuth implementation with user registration/login
 - **🗄️ PostgreSQL Integration** - Full database schema with user management and OAuth tokens
+- **💳 Paid Tools Framework** - Stripe-powered premium tools with automatic payment handling
 - **⚡ Cloudflare Workers** - Serverless deployment with global edge distribution
 - **🛠️ MCP Tools Framework** - Modular tool system with user context
 - **🔌 Custom Routes Framework** - Easy-to-use system for adding REST API endpoints
@@ -18,11 +19,15 @@ This boilerplate provides everything you need to build production-ready MCP serv
 
 ### Available MCP Tools
 
+#### Free Tools
 - `add` - Basic math operations
 - `userInfo` - Get current user information  
 - `personalGreeting` - Personalized user greetings
 - `generateImage` - AI image generation
 - `getUserStats` - User statistics and analytics
+
+#### Premium Tools (Paid)
+- `premium_calculate` - Advanced mathematical calculations with higher precision and complex operations
 
 ## ⚡ Quick Start from index.ts
 
@@ -30,12 +35,43 @@ This boilerplate provides everything you need to build production-ready MCP serv
 
 ### 🛠️ Register MCP Tools
 ```typescript
-// Register all MCP tools with one line each
+// Register free MCP tools with one line each
 backend
   .registerTool(registerMeTool)
   .registerTool(registerGreetingTool)
   .registerTool(registerAddTool)
-  .registerTool(registerGenerateImageTool);
+  .registerTool(registerGenerateImageTool)
+  // Register premium paid tools
+  .registerTool(registerPremiumMathTool);
+```
+
+### 💳 Create Paid Tools
+```typescript
+// Example paid tool implementation
+export async function registerPremiumAnalyticsTool(server: McpServer, userContext: UserContext, env: Env) {
+  await registerPaidTool(
+    server,
+    userContext,
+    env,
+    "premium_analytics",
+    "Generate advanced analytics reports with AI insights",
+    {
+      dataSource: z.string().describe("The data source to analyze"),
+      reportType: z.enum(["summary", "detailed", "predictive"])
+    },
+    async ({ dataSource, reportType }) => {
+      // Your premium tool logic here
+      return {
+        content: [{ type: "text", text: `Premium report for ${userContext.name}` }]
+      };
+    },
+    {
+      priceId: env.STRIPE_PRICE_ID,
+      paymentReason: "Premium analytics require a subscription.",
+      mode: 'subscription'
+    }
+  );
+}
 ```
 
 ### 🔌 Add Custom REST API Endpoints
@@ -155,6 +191,7 @@ Before you start, ensure you have:
 - **Node.js 18+** - [Download here](https://nodejs.org/)
 - **Cloudflare Account** - [Sign up free](https://dash.cloudflare.com/sign-up)
 - **PostgreSQL Database** - See [database options](#database-setup-options) below
+- **Stripe Account** - [Sign up free](https://stripe.com) (for paid tools feature)
 - **Git** - For cloning the repository
 
 ## 🏗️ Quick Start
@@ -261,7 +298,22 @@ cp .dev.vars.example .dev.vars
 nano .dev.vars
 ```
 
-Configure the values to match your environment in .dev.vars.
+Configure the values to match your environment in .dev.vars:
+
+```ini
+# Database Configuration
+DATABASE_URL="postgresql://username:password@host:port/database"
+
+# Security Keys (IMPORTANT: Generate strong, unique keys)
+JWT_SECRET="your-super-secret-jwt-key-at-least-32-characters-long"
+COOKIE_ENCRYPTION_KEY="exactly-32-characters-for-encryption"
+
+# Stripe Configuration (for paid tools)
+STRIPE_SECRET_KEY="sk_test_your_stripe_secret_key_here"
+STRIPE_PRICE_ID="price_your_stripe_price_id_here"
+STRIPE_WEBHOOK_SECRET="whsec_your_webhook_secret_here"
+BASE_URL="https://your-worker-domain.workers.dev"
+```
 
 **🔒 Security Note**: Generate strong secrets:
 ```bash
@@ -271,6 +323,12 @@ openssl rand -hex 32
 # Generate cookie encryption key (32 characters)
 openssl rand -hex 16
 ```
+
+**💳 Stripe Setup** (for paid tools):
+1. Create a [Stripe account](https://stripe.com) and get your secret key
+2. Create products and prices in your Stripe dashboard  
+3. Set up webhooks for payment completion (optional but recommended)
+4. Use test keys for development (`sk_test_...`)
 
 ### 4. Cloudflare Setup
 
@@ -375,6 +433,8 @@ mcp-cf-boilerplate/
 
 ### Adding New MCP Tools
 
+#### Free Tools
+
 1. **Create tool file**: `src/tools/myTool.ts`
 ```typescript
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
@@ -412,6 +472,35 @@ import { registerMyTool } from "./tools";
 backend.registerTool(registerMyTool);
 ```
 
+#### Paid Tools
+
+**💳 For detailed paid tools implementation**, see the [Paid Tools Guide](PAID_TOOLS_GUIDE.md) which covers:
+
+- Complete setup instructions with Stripe
+- Payment flow and user experience
+- One-time payments vs subscriptions vs usage-based billing
+- Security considerations and production deployment
+- Testing with Stripe test mode
+- Custom payment pages and error handling
+
+**Quick Example**:
+```typescript
+// src/tools/premiumTool.ts
+import { registerPaidTool } from "../server/paidTool";
+
+export async function registerPremiumTool(server: McpServer, userContext: UserContext, env: Env) {
+  await registerPaidTool(
+    server, userContext, env,
+    "premium_feature", "Description", params, callback,
+    {
+      priceId: env.STRIPE_PRICE_ID,
+      paymentReason: "This premium feature requires payment.",
+      mode: 'subscription'
+    }
+  );
+}
+```
+
 ## 🔌 Using Your MCP Server
 
 ### With Claude Desktop
@@ -435,6 +524,10 @@ Add to your Claude Desktop config (`~/Library/Application Support/Claude/claude_
 ### MCP Endpoints
 - `POST /mcp` - Main MCP endpoint (requires OAuth)
 - `GET /up` - Health check and server info
+
+### Payment Endpoints (Authenticated)
+- `GET /payment-success` - Payment confirmation page with user info
+- `GET /payment-cancelled` - Payment cancelled page with user info
 
 ### Management Endpoints
 - `POST /init-db` - Initialize database (run once)
@@ -464,9 +557,11 @@ MIT License - see [LICENSE](LICENSE) file for details.
 ## 🙏 Acknowledgments
 
 - [Model Context Protocol](https://modelcontextprotocol.io/) - The protocol this server implements
-- [Cloudflare Workers](https://workers.cloudflare.com/) - Serverless platform
+- [Cloudflare Workers](https://workers.cloudflare.com/) - Serverless platform  
 - [Hono](https://hono.dev/) - Web framework for Cloudflare Workers
 - [@node-oauth/oauth2-server](https://github.com/node-oauth/node-oauth2-server) - OAuth2 implementation
+- [Stripe Agent Toolkit](https://github.com/stripe/agent-toolkit) - Payment integration for AI tools
+- [Stripe](https://stripe.com/) - Payment processing platform
 
 ---
 
