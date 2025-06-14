@@ -1,2 +1,9 @@
-JWT_SECRET=your-super-secret-jwt-key-change-this-in-production
-COOKIE_ENCRYPTION_KEY=12345678901234567890123456789012
+# Database Configuration
+DATABASE_URL="postgresql://username:password@host:port/database"
+
+# Security Keys (IMPORTANT: Generate strong, unique keys)
+JWT_SECRET="your-super-secret-jwt-key-at-least-32-characters-long"
+COOKIE_ENCRYPTION_KEY="exactly-32-characters-for-encryption"
+
+# Optional: Image Generation (if using Workers AI)
+# ALLOWED_IMAGE_USERS="username1,username2"

@@ -261,19 +261,7 @@ cp .dev.vars.example .dev.vars
 nano .dev.vars
 ```
 
-Add your configuration:
-
-```ini
-# Database Configuration
-DATABASE_URL="postgresql://username:password@host:port/database"
-
-# Security Keys (IMPORTANT: Generate strong, unique keys)
-JWT_SECRET="your-super-secret-jwt-key-at-least-32-characters-long"
-COOKIE_ENCRYPTION_KEY="exactly-32-characters-for-encryption"
-
-# Optional: Image Generation (if using Workers AI)
-# ALLOWED_IMAGE_USERS="username1,username2"
-```
+Configure the values to match your environment in .dev.vars.
 
 **🔒 Security Note**: Generate strong secrets:
 ```bash
