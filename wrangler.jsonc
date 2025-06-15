@@ -4,7 +4,7 @@
  */
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
-	"name": "fka-mcp-boilerplate-v1",
+	"name": "mcp-startup-framework",
 	"main": "src/index.ts",
 	"compatibility_date": "2025-03-10",
 	"compatibility_flags": [
@@ -20,8 +20,7 @@
 	"hyperdrive": [
 		{
 			"binding": "HYPERDRIVE",
-			"id": "320f1361655a4ce2971119edc3317ebf",
-			"localConnectionString": "postgresql://postgres.lkqzslktzhsuqtbqtsqj:123123@aws-0-us-east-2.pooler.supabase.com:6543/postgres"
+			"id": "320f1361655a4ce2971119edc3317ebf"
 		}
 	],
 	"observability": {
