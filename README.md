@@ -310,8 +310,7 @@ COOKIE_ENCRYPTION_KEY="exactly-32-characters-for-encryption"
 
 # Stripe Configuration (for paid tools)
 STRIPE_SECRET_KEY="sk_test_your_stripe_secret_key_here"
-STRIPE_PRICE_ID="price_your_stripe_price_id_here"
-STRIPE_WEBHOOK_SECRET="whsec_your_webhook_secret_here"
+STRIPE_PRICE_ID_FOR_PREMIUM_MATH="price_your_stripe_price_id_here"
 BASE_URL="https://your-worker-domain.workers.dev"
 ```
 
@@ -368,6 +367,8 @@ curl -X POST http://localhost:8787/init-db
 # Set each secret securely (you'll be prompted to enter values)
 wrangler secret put JWT_SECRET
 wrangler secret put COOKIE_ENCRYPTION_KEY
+wrangler secret put STRIPE_SECRET_KEY
+wrangler secret put STRIPE_PRICE_ID_FOR_PREMIUM_MATH
 ```
 
 2. **Deploy to Cloudflare**:
@@ -513,6 +514,7 @@ Add to your Claude Desktop config (`~/Library/Application Support/Claude/claude_
     "my-mcp-server": {
       "command": "npx",
       "args": [
+        "-y",
         "mcp-remote",
         "https://your-worker.your-subdomain.workers.dev/mcp"
       ]
@@ -531,6 +533,7 @@ Add to your Claude Desktop config (`~/Library/Application Support/Claude/claude_
 
 ### Management Endpoints
 - `POST /init-db` - Initialize database (run once)
+
 
 ## 🤝 Contributing
 

@@ -38,12 +38,12 @@ export async function registerPaidTool<T extends ZodRawShape>(
       userEmail: userContext.email || userContext.username,
       meterEvent: options.meterEvent,
       checkout: {
-        mode: options.mode || 'payment',
+        mode: options.mode || (options.meterEvent ? 'subscription' : 'payment'),
         payment_method_types: ['card'],
         line_items: [
           {
             price: options.priceId,
-            quantity: 1,
+            quantity: options.meterEvent ? undefined : 1,
           },
         ],
         success_url: `${env.BASE_URL}/payment-success?tool=${toolName}`,

@@ -40,9 +40,10 @@ export async function registerPremiumMathTool(server: McpServer, userContext: Us
       }
     },
     {
-      priceId: env.STRIPE_PRICE_ID || 'price_premium_math', // You'll need to set this in your Stripe dashboard
+      priceId: env.STRIPE_PRICE_ID || 'price_1RaD8VPBdD7BEaodFkzCdtcy', // You'll need to set this in your Stripe dashboard
       paymentReason: "Premium mathematical calculations require a subscription to access advanced computational features.",
-      mode: 'subscription' // or 'payment' for one-time payments
+      mode: 'subscription', // or 'payment' for one-time payments,
+      meterEvent: 'premium_math_calculation'
     }
   );
 }

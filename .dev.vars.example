@@ -7,9 +7,10 @@ COOKIE_ENCRYPTION_KEY="exactly-32-characters-for-encryption"
 
 # Stripe Configuration (for paid tools)
 STRIPE_SECRET_KEY="sk_test_your_stripe_secret_key_here"
-STRIPE_PRICE_ID="price_your_stripe_price_id_here"
-STRIPE_WEBHOOK_SECRET="whsec_your_webhook_secret_here"
+
+# Stripe Price IDs per tool
+STRIPE_PRICE_ID_FOR_PREMIUM_MATH="price_your_stripe_price_id_here"
+
+# Stripe Redirection URIs
 BASE_URL="https://your-worker-domain.workers.dev"
 
-# Optional: Image Generation (if using Workers AI)
-# ALLOWED_IMAGE_USERS="username1,username2"

@@ -1,5 +1,6 @@
 import OAuth2Server from '@node-oauth/oauth2-server';
 import crypto from 'crypto';
+import bcrypt from 'bcryptjs';
 import { DatabaseService } from '../database';
 
 // OAuth2 Server Model implementation
@@ -26,6 +27,12 @@ export class OAuth2Model {
     return this.withDatabase(async (db) => {
       const token = await db.findOAuthAccessTokenByToken(accessToken);
       if (!token) return null;
+
+      // Check if token is expired
+      if (token.expires_at && new Date() > new Date(token.expires_at)) {
+        console.warn('Access token is expired:', accessToken);
+        return null;
+      }
 
       const application = await db.getOAuthApplicationById(token.application_id);
       const user = await db.getUserById(token.user_id);
@@ -91,6 +98,12 @@ export class OAuth2Model {
       const grant = await db.findOAuthAccessGrantByToken(authorizationCode);
       if (!grant || grant.token_type !== 'authorization_code') return null;
 
+      // Check if authorization code is expired
+      if (grant.expires_at && new Date() > new Date(grant.expires_at)) {
+        console.warn('Authorization code is expired:', authorizationCode);
+        return null;
+      }
+
       const application = await db.getOAuthApplicationById(grant.application_id);
       const user = await db.getUserById(grant.user_id);
 
@@ -123,9 +136,26 @@ export class OAuth2Model {
       const application = await db.getOAuthApplicationByClientId(clientId);
       if (!application) return null;
 
-      // If client secret is provided, verify it
-      if (clientSecret && application.secret !== clientSecret) {
-        return null;
+      // If client secret is provided, verify it using secure comparison
+      if (clientSecret) {
+        // Check if the stored secret is hashed (bcrypt hashes start with $2a$, $2b$, or $2y$)
+        const isHashed = application.secret.startsWith('$2a$') || 
+                        application.secret.startsWith('$2b$') || 
+                        application.secret.startsWith('$2y$');
+        
+        let isValidSecret = false;
+        if (isHashed) {
+          // Use bcrypt for secure comparison
+          isValidSecret = await bcrypt.compare(clientSecret, application.secret);
+        } else {
+          // Legacy plain text comparison (deprecated, log warning)
+          console.warn('WARNING: Client secret is stored in plain text. Please regenerate with hashing.');
+          isValidSecret = application.secret === clientSecret;
+        }
+        
+        if (!isValidSecret) {
+          return null;
+        }
       }
 
       return {
@@ -259,6 +289,30 @@ export class OAuth2Model {
   generateAuthorizationCode(client: any, user: any, scope: any): string {
     return crypto.randomBytes(32).toString('hex');
   }
+
+  // Validate PKCE code verifier
+  async validateCodeChallenge(codeVerifier: string, codeChallenge: string, codeChallengeMethod: string): Promise<boolean> {
+    if (!codeVerifier || !codeChallenge) {
+      return false;
+    }
+
+    try {
+      if (codeChallengeMethod === 'S256') {
+        const hash = crypto.createHash('sha256').update(codeVerifier).digest();
+        const base64UrlHash = hash.toString('base64')
+          .replace(/\+/g, '-')
+          .replace(/\//g, '_')
+          .replace(/=/g, '');
+        return base64UrlHash === codeChallenge;
+      } else if (codeChallengeMethod === 'plain') {
+        return codeVerifier === codeChallenge;
+      }
+      return false;
+    } catch (error) {
+      console.error('PKCE validation error:', error);
+      return false;
+    }
+  }
 }
 
 // Create OAuth2 server instance
@@ -267,12 +321,12 @@ export function createOAuth2Server(databaseUrl: string): OAuth2Server {
   
   return new OAuth2Server({
     model: model as any,
-    debug: true,
+    debug: false, // SECURITY: Never enable debug in production
     accessTokenLifetime: 3600, // 1 hour
     refreshTokenLifetime: 30 * 24 * 60 * 60, // 30 days
     authorizationCodeLifetime: 600, // 10 minutes
-    allowBearerTokensInQueryString: true,
-    allowEmptyState: true,
+    allowBearerTokensInQueryString: false, // SECURITY: Prevent tokens in URL/logs
+    allowEmptyState: false, // SECURITY: Require state parameter for CSRF protection
     requireClientAuthentication: {
       authorization_code: true,
       refresh_token: true

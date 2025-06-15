@@ -324,7 +324,14 @@ oauthApp.post("/oauth/applications", async (c) => {
       try {
         const url = new URL(uri);
         // Only allow HTTPS URIs (except for localhost in development)
-        if (url.protocol !== 'https:' && !url.hostname.includes('localhost') && !url.hostname.includes('127.0.0.1')) {
+        // SECURITY: Use exact hostname matching to prevent subdomain attacks
+        const isLocalhost = url.hostname === 'localhost' || 
+                           url.hostname === '127.0.0.1' || 
+                           url.hostname === '::1' ||
+                           url.hostname.startsWith('localhost:') ||
+                           url.hostname.startsWith('127.0.0.1:');
+                           
+        if (url.protocol !== 'https:' && !isLocalhost) {
           return c.json({
             error: "invalid_redirect_uri",
             error_description: "Only HTTPS redirect URIs are allowed (except localhost)"

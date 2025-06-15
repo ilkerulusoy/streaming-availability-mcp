@@ -3,7 +3,7 @@ import { UserContext } from "../types";
 
 export function registerSearchTool(server: McpServer, userContext: UserContext) {
   server.tool(
-    "search_content", 
+    "search", 
     "Search for content across various data sources", 
     {
       query: {

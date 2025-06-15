@@ -3,7 +3,7 @@ import { UserContext } from "../types";
 
 export function registerFetchTool(server: McpServer, userContext: UserContext) {
   server.tool(
-    "fetch_content", 
+    "fetch", 
     "Fetch specific content by ID or URL from various data sources", 
     {
       identifier: {
