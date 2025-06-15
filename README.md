@@ -5,12 +5,13 @@ A complete framework for building remote Model Context Protocol (MCP) servers on
 ## 🚀 Features
 
 - **🔐 OAuth 2.1 Provider** - Complete authentication with user registration/login
-- **🗄️ PostgreSQL Integration** - Full database schema with user management
-- **💳 Paid Tools Framework** - Stripe-powered premium tools
-- **⚡ Cloudflare Workers** - Serverless deployment with global edge distribution
+- **🗄️ PostgreSQL Integration** - Scalable production-ready database with connection pooling
+- **💳 Paid Tools Framework** - Stripe-powered premium tools with subscription support
+- **🌐 Platform Agnostic** - Optimized for Cloudflare Workers but deployable anywhere (Vercel, Railway, AWS, self-hosted)
 - **🛠️ MCP Tools Framework** - Modular tool system with user context
 - **🔌 REST API Routes** - Easy-to-use system for adding custom endpoints
-- **🎨 Beautiful UI** - Responsive login/registration pages
+- **🎨 Custom Views** - Extensible UI system for privacy policies, ToS, documentation pages
+- **📡 Streamable HTTP Transport** - Works with `mcp-remote` for local Claude Desktop integration
 - **📱 Cross-Platform** - Works on desktop, web, and mobile MCP clients
 
 ## ⚡ Quick Start
@@ -82,6 +83,20 @@ backend
 
 See [Tools Guide](docs/tools.md) and [Routes Guide](docs/custom-routes.md) for details.
 
+### Custom Views
+
+Extend beyond MCP with custom pages:
+
+```typescript
+// Add privacy policy, terms of service, documentation
+backend
+  .route('GET', '/privacy', (c) => c.html(generatePrivacyPage()))
+  .route('GET', '/terms', (c) => c.html(generateTermsPage()))
+  .route('GET', '/docs', (c) => c.html(generateDocsPage()));
+```
+
+See [Views Guide](docs/views.md) for creating custom pages.
+
 ## 🚀 Deployment
 
 ```bash
@@ -98,6 +113,80 @@ npm run deploy
 ```
 
 See [Deployment Guide](docs/deployment.md) for full instructions.
+
+## 🔗 Integration Options
+
+### Using claude.ai (Pro Plan)
+
+For claude.ai Pro users, you can integrate directly:
+
+1. Navigate to [claude.ai settings](https://claude.ai/settings/integrations)
+2. Click "Add Integration" 
+3. Enter your server URL: `https://your-domain.workers.dev/sse`
+4. Complete the OAuth flow
+
+### Using Claude Desktop
+
+For local Claude Desktop app:
+
+#### 1. Install MCP Remote Client
+```bash
+npm install -g mcp-remote
+```
+
+#### 2. Configure Claude Desktop
+Open Claude Desktop settings: **Settings > Developer > Edit Config**
+
+Add to your `claude_desktop_config.json`:
+
+```json
+{
+  "mcpServers": {
+    "my-startup": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-remote",
+        "https://your-domain.workers.dev/mcp"
+      ]
+    }
+  }
+}
+```
+
+#### 3. Restart Claude Desktop
+After saving, restart Claude Desktop. Your MCP tools will appear in the chat interface.
+
+### Transport Options
+
+The framework supports multiple transport protocols:
+- **Streamable HTTP** (default) - `/mcp` endpoint
+- **Server-Sent Events (SSE)** - `/sse` endpoint
+
+Both work seamlessly with `mcp-remote` for local development and production use.
+
+## 🌐 Platform Flexibility
+
+While optimized for **Cloudflare Workers**, this framework runs anywhere:
+
+- **Vercel**: Deploy with `@vercel/node` runtime
+- **Railway**: One-click deploy with built-in PostgreSQL
+- **AWS Lambda**: Use with RDS or Aurora Serverless
+- **Google Cloud Run**: Deploy with Cloud SQL
+- **Self-hosted**: Run with Docker on any VPS
+
+Simply update your database connection and deployment configuration!
+
+### Production Database
+
+The framework works with any PostgreSQL provider:
+- **Neon** - Serverless PostgreSQL with autoscaling
+- **Supabase** - PostgreSQL with real-time features  
+- **Railway** - Managed PostgreSQL with automatic backups
+- **Amazon RDS** - Enterprise-grade PostgreSQL
+- **Cloudflare Hyperdrive** - Connection pooling for optimal performance
+
+All providers support the scalability needed for production MCP servers.
 
 ## 📚 Documentation
 

@@ -77,6 +77,23 @@ npm run dev
 # Server runs on http://localhost:8787
 ```
 
+### Local Database Connection
+
+For local development, configure the database connection in `wrangler.jsonc`:
+
+Add `localConnectionString` to following HYPERDRIVE config:
+
+```json
+  "hyperdrive": [
+		{
+			"binding": "HYPERDRIVE",
+			"id": "<hyperdrive id>",
+			"localConnectionString": "postgresql://user:pass@localhost:6543/postgres"
+		}
+	],
+```
+
+
 ### 2. Making Changes
 
 1. **Edit code** - Changes auto-reload in development
