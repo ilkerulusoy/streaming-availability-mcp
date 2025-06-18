@@ -7,6 +7,7 @@ import {
   registerSearchTool,
   registerFetchTool,
   registerPremiumMathTool,
+  registerStreamingAvailabilityTool,
 } from "./tools";
 import { generatePaymentSuccessPage } from "./auth/views";
 
@@ -25,6 +26,8 @@ backend
   // OpenAI compatible tools
   .registerTool(registerSearchTool)
   .registerTool(registerFetchTool)
+  // Streaming availability tool
+  .registerTool(registerStreamingAvailabilityTool)
   // Premium tools
   .registerTool(registerPremiumMathTool);
 

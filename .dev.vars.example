@@ -14,3 +14,6 @@ STRIPE_PRICE_ID_FOR_PREMIUM_MATH="price_your_stripe_price_id_here"
 # Stripe Redirection URIs
 BASE_URL="https://your-worker-domain.workers.dev"
 
+# RapidAPI Key for Streaming Availability
+RAPIDAPI_KEY_STREAMING_AVAILABILITY="your-rapidapi-key-here"
+

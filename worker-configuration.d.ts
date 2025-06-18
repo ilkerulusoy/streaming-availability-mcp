@@ -3,16 +3,17 @@
 // Runtime types generated with workerd@1.20250523.0 2025-03-10 nodejs_compat
 declare namespace Cloudflare {
 	interface Env {
-		DATABASE_URL: string;
-		JWT_SECRET: string;
-		COOKIE_ENCRYPTION_KEY: string;
-		STRIPE_SECRET_KEY: string;
-		STRIPE_PRICE_ID_FOR_PREMIUM_MATH: string;
-		WRANGLER_HYPERDRIVE_LOCAL_CONNECTION_STRING_HYPERDRIVE: string;
-		BASE_URL: string;
-		HYPERDRIVE: Hyperdrive;
-		AI: Ai;
-	}
+    DATABASE_URL: string;
+    JWT_SECRET: string;
+    COOKIE_ENCRYPTION_KEY: string;
+    STRIPE_SECRET_KEY: string;
+    STRIPE_PRICE_ID_FOR_PREMIUM_MATH: string;
+    WRANGLER_HYPERDRIVE_LOCAL_CONNECTION_STRING_HYPERDRIVE: string;
+    BASE_URL: string;
+    HYPERDRIVE: Hyperdrive;
+    AI: Ai;
+    RAPIDAPI_KEY_STREAMING_AVAILABILITY: string;
+  }
 }
 interface Env extends Cloudflare.Env {}
 
@@ -1024,7 +1025,7 @@ declare class DigestStream extends WritableStream<ArrayBuffer | ArrayBufferView>
     get bytesWritten(): number | bigint;
 }
 /**
- * A decoder for a specific method, that is a specific character encoding, like utf-8, iso-8859-2, koi8, cp1261, gbk, etc. A decoder takes a stream of bytes as input and emits a stream of code points. For a more scalable, non-native library, see StringView – a C-like representation of strings based on typed arrays.
+ * A decoder for a specific method, that is a specific character encoding, like utf-8, iso-8859-2, koi8, cp1261, gbk, etc. A decoder takes a stream of bytes as input and emits a stream of code points. For a more scalable, non-native library, see StringView – a C-like representation of strings based on typed arrays.
  *
  * [MDN Reference](https://developer.mozilla.org/docs/Web/API/TextDecoder)
  */
@@ -1216,7 +1217,7 @@ interface DocumentEnd {
     append(content: string, options?: ContentOptions): DocumentEnd;
 }
 /**
- * This is the event type for fetch events dispatched on the service worker global scope. It contains information about the fetch, including the request and how the receiver will treat the response. It provides the event.respondWith() method, which allows us to provide a response to this fetch.
+ * This is the event type for fetch events dispatched on the service worker global scope. It contains information about the fetch, including the request and how the receiver will treat the response. It provides the event.respondWith() method, which allows us to provide a response to this fetch.
  *
  * [MDN Reference](https://developer.mozilla.org/docs/Web/API/FetchEvent)
  */
@@ -1229,7 +1230,7 @@ declare abstract class FetchEvent extends ExtendableEvent {
 }
 type HeadersInit = Headers | Iterable<Iterable<string>> | Record<string, string>;
 /**
- * This Fetch API interface allows you to perform various actions on HTTP request and response headers. These actions include retrieving, setting, adding to, and removing. A Headers object has an associated header list, which is initially empty and consists of zero or more name and value pairs.  You can add to this using methods like append() (see Examples.) In all methods of this interface, header names are matched by case-insensitive byte sequence.
+ * This Fetch API interface allows you to perform various actions on HTTP request and response headers. These actions include retrieving, setting, adding to, and removing. A Headers object has an associated header list, which is initially empty and consists of zero or more name and value pairs. You can add to this using methods like append() (see Examples.) In all methods of this interface, header names are matched by case-insensitive byte sequence.
  *
  * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Headers)
  */
@@ -1843,7 +1844,7 @@ declare abstract class ReadableByteStreamController {
     error(reason: any): void;
 }
 /**
- * This Streams API interface represents a controller allowing control of a WritableStream's state. When constructing a WritableStream, the underlying sink is given a corresponding WritableStreamDefaultController instance to manipulate.
+ * This Streams API interface represents a controller allowing control of a WritableStream's state. When constructing a WritableStream, the underlying sink is given a corresponding WritableStreamDefaultController instance to manipulate.
  *
  * [MDN Reference](https://developer.mozilla.org/docs/Web/API/WritableStreamDefaultController)
  */
@@ -1874,7 +1875,7 @@ interface ReadableWritablePair<R = any, W = any> {
     readable: ReadableStream<R>;
 }
 /**
- * This Streams API interface provides a standard abstraction for writing streaming data to a destination, known as a sink. This object comes with built-in backpressure and queuing.
+ * This Streams API interface provides a standard abstraction for writing streaming data to a destination, known as a sink. This object comes with built-in backpressure and queuing.
  *
  * [MDN Reference](https://developer.mozilla.org/docs/Web/API/WritableStream)
  */
@@ -1956,7 +1957,7 @@ interface TextDecoderStreamTextDecoderStreamInit {
     ignoreBOM?: boolean;
 }
 /**
- * This Streams API interface provides a built-in byte length queuing strategy that can be used when constructing streams.
+ * This Streams API interface provides a built-in byte length queuing strategy that can be used when constructing streams.
  *
  * [MDN Reference](https://developer.mozilla.org/docs/Web/API/ByteLengthQueuingStrategy)
  */
@@ -1968,7 +1969,7 @@ declare class ByteLengthQueuingStrategy implements QueuingStrategy<ArrayBufferVi
     get size(): (chunk?: any) => number;
 }
 /**
- * This Streams API interface provides a built-in byte length queuing strategy that can be used when constructing streams.
+ * This Streams API interface provides a built-in byte length queuing strategy that can be used when constructing streams.
  *
  * [MDN Reference](https://developer.mozilla.org/docs/Web/API/CountQueuingStrategy)
  */
@@ -2092,7 +2093,7 @@ interface UnsafeTraceMetrics {
     fromTrace(item: TraceItem): TraceMetrics;
 }
 /**
- * The URL interface represents an object providing static methods used for creating object URLs.
+ * The URL interface represents an object providing static methods used for creating object URLs.
  *
  * [MDN Reference](https://developer.mozilla.org/docs/Web/API/URL)
  */
@@ -3884,65 +3885,65 @@ declare abstract class AutoRAG {
     aiSearch(params: AutoRagAiSearchRequest): Promise<AutoRagAiSearchResponse | Response>;
 }
 interface BasicImageTransformations {
-    /**
-     * Maximum width in image pixels. The value must be an integer.
-     */
-    width?: number;
-    /**
-     * Maximum height in image pixels. The value must be an integer.
-     */
-    height?: number;
-    /**
-     * Resizing mode as a string. It affects interpretation of width and height
-     * options:
-     *  - scale-down: Similar to contain, but the image is never enlarged. If
-     *    the image is larger than given width or height, it will be resized.
-     *    Otherwise its original size will be kept.
-     *  - contain: Resizes to maximum size that fits within the given width and
-     *    height. If only a single dimension is given (e.g. only width), the
-     *    image will be shrunk or enlarged to exactly match that dimension.
-     *    Aspect ratio is always preserved.
-     *  - cover: Resizes (shrinks or enlarges) to fill the entire area of width
-     *    and height. If the image has an aspect ratio different from the ratio
-     *    of width and height, it will be cropped to fit.
-     *  - crop: The image will be shrunk and cropped to fit within the area
-     *    specified by width and height. The image will not be enlarged. For images
-     *    smaller than the given dimensions it's the same as scale-down. For
-     *    images larger than the given dimensions, it's the same as cover.
-     *    See also trim.
-     *  - pad: Resizes to the maximum size that fits within the given width and
-     *    height, and then fills the remaining area with a background color
-     *    (white by default). Use of this mode is not recommended, as the same
-     *    effect can be more efficiently achieved with the contain mode and the
-     *    CSS object-fit: contain property.
-     *  - squeeze: Stretches and deforms to the width and height given, even if it
-     *    breaks aspect ratio
-     */
-    fit?: "scale-down" | "contain" | "cover" | "crop" | "pad" | "squeeze";
-    /**
-     * When cropping with fit: "cover", this defines the side or point that should
-     * be left uncropped. The value is either a string
-     * "left", "right", "top", "bottom", "auto", or "center" (the default),
-     * or an object {x, y} containing focal point coordinates in the original
-     * image expressed as fractions ranging from 0.0 (top or left) to 1.0
-     * (bottom or right), 0.5 being the center. {fit: "cover", gravity: "top"} will
-     * crop bottom or left and right sides as necessary, but won’t crop anything
-     * from the top. {fit: "cover", gravity: {x:0.5, y:0.2}} will crop each side to
-     * preserve as much as possible around a point at 20% of the height of the
-     * source image.
-     */
-    gravity?: 'left' | 'right' | 'top' | 'bottom' | 'center' | 'auto' | 'entropy' | BasicImageTransformationsGravityCoordinates;
-    /**
-     * Background color to add underneath the image. Applies only to images with
-     * transparency (such as PNG). Accepts any CSS color (#RRGGBB, rgba(…),
-     * hsl(…), etc.)
-     */
-    background?: string;
-    /**
-     * Number of degrees (90, 180, 270) to rotate the image by. width and height
-     * options refer to axes after rotation.
-     */
-    rotate?: 0 | 90 | 180 | 270 | 360;
+  /**
+   * Maximum width in image pixels. The value must be an integer.
+   */
+  width?: number;
+  /**
+   * Maximum height in image pixels. The value must be an integer.
+   */
+  height?: number;
+  /**
+   * Resizing mode as a string. It affects interpretation of width and height
+   * options:
+   *  - scale-down: Similar to contain, but the image is never enlarged. If
+   *    the image is larger than given width or height, it will be resized.
+   *    Otherwise its original size will be kept.
+   *  - contain: Resizes to maximum size that fits within the given width and
+   *    height. If only a single dimension is given (e.g. only width), the
+   *    image will be shrunk or enlarged to exactly match that dimension.
+   *    Aspect ratio is always preserved.
+   *  - cover: Resizes (shrinks or enlarges) to fill the entire area of width
+   *    and height. If the image has an aspect ratio different from the ratio
+   *    of width and height, it will be cropped to fit.
+   *  - crop: The image will be shrunk and cropped to fit within the area
+   *    specified by width and height. The image will not be enlarged. For images
+   *    smaller than the given dimensions it's the same as scale-down. For
+   *    images larger than the given dimensions, it's the same as cover.
+   *    See also trim.
+   *  - pad: Resizes to the maximum size that fits within the given width and
+   *    height, and then fills the remaining area with a background color
+   *    (white by default). Use of this mode is not recommended, as the same
+   *    effect can be more efficiently achieved with the contain mode and the
+   *    CSS object-fit: contain property.
+   *  - squeeze: Stretches and deforms to the width and height given, even if it
+   *    breaks aspect ratio
+   */
+  fit?: "scale-down" | "contain" | "cover" | "crop" | "pad" | "squeeze";
+  /**
+   * When cropping with fit: "cover", this defines the side or point that should
+   * be left uncropped. The value is either a string
+   * "left", "right", "top", "bottom", "auto", or "center" (the default),
+   * or an object {x, y} containing focal point coordinates in the original
+   * image expressed as fractions ranging from 0.0 (top or left) to 1.0
+   * (bottom or right), 0.5 being the center. {fit: "cover", gravity: "top"} will
+   * crop bottom or left and right sides as necessary, but won't crop anything
+   * from the top. {fit: "cover", gravity: {x:0.5, y:0.2}} will crop each side to
+   * preserve as much as possible around a point at 20% of the height of the
+   * source image.
+   */
+  gravity?: "left" | "right" | "top" | "bottom" | "center" | "auto" | "entropy" | BasicImageTransformationsGravityCoordinates;
+  /**
+   * Background color to add underneath the image. Applies only to images with
+   * transparency (such as PNG). Accepts any CSS color (#RRGGBB, rgba(…),
+   * hsl(…), etc.)
+   */
+  background?: string;
+  /**
+   * Number of degrees (90, 180, 270) to rotate the image by. width and height
+   * options refer to axes after rotation.
+   */
+  rotate?: 0 | 90 | 180 | 270 | 360;
 }
 interface BasicImageTransformationsGravityCoordinates {
     x?: number;
@@ -3959,55 +3960,55 @@ interface BasicImageTransformationsGravityCoordinates {
  * playground.
  */
 interface RequestInitCfProperties extends Record<string, unknown> {
-    cacheEverything?: boolean;
-    /**
-     * A request's cache key is what determines if two requests are
-     * "the same" for caching purposes. If a request has the same cache key
-     * as some previous request, then we can serve the same cached response for
-     * both. (e.g. 'some-key')
-     *
-     * Only available for Enterprise customers.
-     */
-    cacheKey?: string;
-    /**
-     * This allows you to append additional Cache-Tag response headers
-     * to the origin response without modifications to the origin server.
-     * This will allow for greater control over the Purge by Cache Tag feature
-     * utilizing changes only in the Workers process.
-     *
-     * Only available for Enterprise customers.
-     */
-    cacheTags?: string[];
-    /**
-     * Force response to be cached for a given number of seconds. (e.g. 300)
-     */
-    cacheTtl?: number;
-    /**
-     * Force response to be cached for a given number of seconds based on the Origin status code.
-     * (e.g. { '200-299': 86400, '404': 1, '500-599': 0 })
-     */
-    cacheTtlByStatus?: Record<string, number>;
-    scrapeShield?: boolean;
-    apps?: boolean;
-    image?: RequestInitCfPropertiesImage;
-    minify?: RequestInitCfPropertiesImageMinify;
-    mirage?: boolean;
-    polish?: "lossy" | "lossless" | "off";
-    r2?: RequestInitCfPropertiesR2;
-    /**
-     * Redirects the request to an alternate origin server. You can use this,
-     * for example, to implement load balancing across several origins.
-     * (e.g.us-east.example.com)
-     *
-     * Note - For security reasons, the hostname set in resolveOverride must
-     * be proxied on the same Cloudflare zone of the incoming request.
-     * Otherwise, the setting is ignored. CNAME hosts are allowed, so to
-     * resolve to a host under a different domain or a DNS only domain first
-     * declare a CNAME record within your own zone’s DNS mapping to the
-     * external hostname, set proxy on Cloudflare, then set resolveOverride
-     * to point to that CNAME record.
-     */
-    resolveOverride?: string;
+  cacheEverything?: boolean;
+  /**
+   * A request's cache key is what determines if two requests are
+   * "the same" for caching purposes. If a request has the same cache key
+   * as some previous request, then we can serve the same cached response for
+   * both. (e.g. 'some-key')
+   *
+   * Only available for Enterprise customers.
+   */
+  cacheKey?: string;
+  /**
+   * This allows you to append additional Cache-Tag response headers
+   * to the origin response without modifications to the origin server.
+   * This will allow for greater control over the Purge by Cache Tag feature
+   * utilizing changes only in the Workers process.
+   *
+   * Only available for Enterprise customers.
+   */
+  cacheTags?: string[];
+  /**
+   * Force response to be cached for a given number of seconds. (e.g. 300)
+   */
+  cacheTtl?: number;
+  /**
+   * Force response to be cached for a given number of seconds based on the Origin status code.
+   * (e.g. { '200-299': 86400, '404': 1, '500-599': 0 })
+   */
+  cacheTtlByStatus?: Record<string, number>;
+  scrapeShield?: boolean;
+  apps?: boolean;
+  image?: RequestInitCfPropertiesImage;
+  minify?: RequestInitCfPropertiesImageMinify;
+  mirage?: boolean;
+  polish?: "lossy" | "lossless" | "off";
+  r2?: RequestInitCfPropertiesR2;
+  /**
+   * Redirects the request to an alternate origin server. You can use this,
+   * for example, to implement load balancing across several origins.
+   * (e.g.us-east.example.com)
+   *
+   * Note - For security reasons, the hostname set in resolveOverride must
+   * be proxied on the same Cloudflare zone of the incoming request.
+   * Otherwise, the setting is ignored. CNAME hosts are allowed, so to
+   * resolve to a host under a different domain or a DNS only domain first
+   * declare a CNAME record within your own zone's DNS mapping to the
+   * external hostname, set proxy on Cloudflare, then set resolveOverride
+   * to point to that CNAME record.
+   */
+  resolveOverride?: string;
 }
 interface RequestInitCfPropertiesImageDraw extends BasicImageTransformations {
     /**
@@ -4047,155 +4048,161 @@ interface RequestInitCfPropertiesImageDraw extends BasicImageTransformations {
     right?: number;
 }
 interface RequestInitCfPropertiesImage extends BasicImageTransformations {
-    /**
-     * Device Pixel Ratio. Default 1. Multiplier for width/height that makes it
-     * easier to specify higher-DPI sizes in <img srcset>.
-     */
-    dpr?: number;
-    /**
-     * Allows you to trim your image. Takes dpr into account and is performed before
-     * resizing or rotation.
-     *
-     * It can be used as:
-     * - left, top, right, bottom - it will specify the number of pixels to cut
-     *   off each side
-     * - width, height - the width/height you'd like to end up with - can be used
-     *   in combination with the properties above
-     * - border - this will automatically trim the surroundings of an image based on
-     *   it's color. It consists of three properties:
-     *    - color: rgb or hex representation of the color you wish to trim (todo: verify the rgba bit)
-     *    - tolerance: difference from color to treat as color
-     *    - keep: the number of pixels of border to keep
-     */
-    trim?: "border" | {
+  /**
+   * Device Pixel Ratio. Default 1. Multiplier for width/height that makes it
+   * easier to specify higher-DPI sizes in <img srcset>.
+   */
+  dpr?: number;
+  /**
+   * Allows you to trim your image. Takes dpr into account and is performed before
+   * resizing or rotation.
+   *
+   * It can be used as:
+   * - left, top, right, bottom - it will specify the number of pixels to cut
+   *   off each side
+   * - width, height - the width/height you'd like to end up with - can be used
+   *   in combination with the properties above
+   * - border - this will automatically trim the surroundings of an image based on
+   *   it's color. It consists of three properties:
+   *    - color: rgb or hex representation of the color you wish to trim (todo: verify the rgba bit)
+   *    - tolerance: difference from color to treat as color
+   *    - keep: the number of pixels of border to keep
+   */
+  trim?:
+    | "border"
+    | {
         top?: number;
         bottom?: number;
         left?: number;
         right?: number;
         width?: number;
         height?: number;
-        border?: boolean | {
-            color?: string;
-            tolerance?: number;
-            keep?: number;
-        };
-    };
-    /**
-     * Quality setting from 1-100 (useful values are in 60-90 range). Lower values
-     * make images look worse, but load faster. The default is 85. It applies only
-     * to JPEG and WebP images. It doesn’t have any effect on PNG.
-     */
-    quality?: number | "low" | "medium-low" | "medium-high" | "high";
-    /**
-     * Output format to generate. It can be:
-     *  - avif: generate images in AVIF format.
-     *  - webp: generate images in Google WebP format. Set quality to 100 to get
-     *    the WebP-lossless format.
-     *  - json: instead of generating an image, outputs information about the
-     *    image, in JSON format. The JSON object will contain image size
-     *    (before and after resizing), source image’s MIME type, file size, etc.
-     * - jpeg: generate images in JPEG format.
-     * - png: generate images in PNG format.
-     */
-    format?: "avif" | "webp" | "json" | "jpeg" | "png" | "baseline-jpeg" | "png-force" | "svg";
-    /**
-     * Whether to preserve animation frames from input files. Default is true.
-     * Setting it to false reduces animations to still images. This setting is
-     * recommended when enlarging images or processing arbitrary user content,
-     * because large GIF animations can weigh tens or even hundreds of megabytes.
-     * It is also useful to set anim:false when using format:"json" to get the
-     * response quicker without the number of frames.
-     */
-    anim?: boolean;
-    /**
-     * What EXIF data should be preserved in the output image. Note that EXIF
-     * rotation and embedded color profiles are always applied ("baked in" into
-     * the image), and aren't affected by this option. Note that if the Polish
-     * feature is enabled, all metadata may have been removed already and this
-     * option may have no effect.
-     *  - keep: Preserve most of EXIF metadata, including GPS location if there's
-     *    any.
-     *  - copyright: Only keep the copyright tag, and discard everything else.
-     *    This is the default behavior for JPEG files.
-     *  - none: Discard all invisible EXIF metadata. Currently WebP and PNG
-     *    output formats always discard metadata.
-     */
-    metadata?: "keep" | "copyright" | "none";
-    /**
-     * Strength of sharpening filter to apply to the image. Floating-point
-     * number between 0 (no sharpening, default) and 10 (maximum). 1.0 is a
-     * recommended value for downscaled images.
-     */
-    sharpen?: number;
-    /**
-     * Radius of a blur filter (approximate gaussian). Maximum supported radius
-     * is 250.
-     */
-    blur?: number;
-    /**
-     * Overlays are drawn in the order they appear in the array (last array
-     * entry is the topmost layer).
-     */
-    draw?: RequestInitCfPropertiesImageDraw[];
-    /**
-     * Fetching image from authenticated origin. Setting this property will
-     * pass authentication headers (Authorization, Cookie, etc.) through to
-     * the origin.
-     */
-    "origin-auth"?: "share-publicly";
-    /**
-     * Adds a border around the image. The border is added after resizing. Border
-     * width takes dpr into account, and can be specified either using a single
-     * width property, or individually for each side.
-     */
-    border?: {
+        border?:
+          | boolean
+          | {
+              color?: string;
+              tolerance?: number;
+              keep?: number;
+            };
+      };
+  /**
+   * Quality setting from 1-100 (useful values are in 60-90 range). Lower values
+   * make images look worse, but load faster. The default is 85. It applies only
+   * to JPEG and WebP images. It doesn't have any effect on PNG.
+   */
+  quality?: number | "low" | "medium-low" | "medium-high" | "high";
+  /**
+   * Output format to generate. It can be:
+   *  - avif: generate images in AVIF format.
+   *  - webp: generate images in Google WebP format. Set quality to 100 to get
+   *    the WebP-lossless format.
+   *  - json: instead of generating an image, outputs information about the
+   *    image, in JSON format. The JSON object will contain image size
+   *    (before and after resizing), source image's MIME type, file size, etc.
+   * - jpeg: generate images in JPEG format.
+   * - png: generate images in PNG format.
+   */
+  format?: "avif" | "webp" | "json" | "jpeg" | "png" | "baseline-jpeg" | "png-force" | "svg";
+  /**
+   * Whether to preserve animation frames from input files. Default is true.
+   * Setting it to false reduces animations to still images. This setting is
+   * recommended when enlarging images or processing arbitrary user content,
+   * because large GIF animations can weigh tens or even hundreds of megabytes.
+   * It is also useful to set anim:false when using format:"json" to get the
+   * response quicker without the number of frames.
+   */
+  anim?: boolean;
+  /**
+   * What EXIF data should be preserved in the output image. Note that EXIF
+   * rotation and embedded color profiles are always applied ("baked in" into
+   * the image), and aren't affected by this option. Note that if the Polish
+   * feature is enabled, all metadata may have been removed already and this
+   * option may have no effect.
+   *  - keep: Preserve most of EXIF metadata, including GPS location if there's
+   *    any.
+   *  - copyright: Only keep the copyright tag, and discard everything else.
+   *    This is the default behavior for JPEG files.
+   *  - none: Discard all invisible EXIF metadata. Currently WebP and PNG
+   *    output formats always discard metadata.
+   */
+  metadata?: "keep" | "copyright" | "none";
+  /**
+   * Strength of sharpening filter to apply to the image. Floating-point
+   * number between 0 (no sharpening, default) and 10 (maximum). 1.0 is a
+   * recommended value for downscaled images.
+   */
+  sharpen?: number;
+  /**
+   * Radius of a blur filter (approximate gaussian). Maximum supported radius
+   * is 250.
+   */
+  blur?: number;
+  /**
+   * Overlays are drawn in the order they appear in the array (last array
+   * entry is the topmost layer).
+   */
+  draw?: RequestInitCfPropertiesImageDraw[];
+  /**
+   * Fetching image from authenticated origin. Setting this property will
+   * pass authentication headers (Authorization, Cookie, etc.) through to
+   * the origin.
+   */
+  "origin-auth"?: "share-publicly";
+  /**
+   * Adds a border around the image. The border is added after resizing. Border
+   * width takes dpr into account, and can be specified either using a single
+   * width property, or individually for each side.
+   */
+  border?:
+    | {
         color: string;
         width: number;
-    } | {
+      }
+    | {
         color: string;
         top: number;
         right: number;
         bottom: number;
         left: number;
-    };
-    /**
-     * Increase brightness by a factor. A value of 1.0 equals no change, a value
-     * of 0.5 equals half brightness, and a value of 2.0 equals twice as bright.
-     * 0 is ignored.
-     */
-    brightness?: number;
-    /**
-     * Increase contrast by a factor. A value of 1.0 equals no change, a value of
-     * 0.5 equals low contrast, and a value of 2.0 equals high contrast. 0 is
-     * ignored.
-     */
-    contrast?: number;
-    /**
-     * Increase exposure by a factor. A value of 1.0 equals no change, a value of
-     * 0.5 darkens the image, and a value of 2.0 lightens the image. 0 is ignored.
-     */
-    gamma?: number;
-    /**
-     * Increase contrast by a factor. A value of 1.0 equals no change, a value of
-     * 0.5 equals low contrast, and a value of 2.0 equals high contrast. 0 is
-     * ignored.
-     */
-    saturation?: number;
-    /**
-     * Flips the images horizontally, vertically, or both. Flipping is applied before
-     * rotation, so if you apply flip=h,rotate=90 then the image will be flipped
-     * horizontally, then rotated by 90 degrees.
-     */
-    flip?: 'h' | 'v' | 'hv';
-    /**
-     * Slightly reduces latency on a cache miss by selecting a
-     * quickest-to-compress file format, at a cost of increased file size and
-     * lower image quality. It will usually override the format option and choose
-     * JPEG over WebP or AVIF. We do not recommend using this option, except in
-     * unusual circumstances like resizing uncacheable dynamically-generated
-     * images.
-     */
-    compression?: "fast";
+      };
+  /**
+   * Increase brightness by a factor. A value of 1.0 equals no change, a value
+   * of 0.5 equals half brightness, and a value of 2.0 equals twice as bright.
+   * 0 is ignored.
+   */
+  brightness?: number;
+  /**
+   * Increase contrast by a factor. A value of 1.0 equals no change, a value of
+   * 0.5 equals low contrast, and a value of 2.0 equals high contrast. 0 is
+   * ignored.
+   */
+  contrast?: number;
+  /**
+   * Increase exposure by a factor. A value of 1.0 equals no change, a value of
+   * 0.5 darkens the image, and a value of 2.0 lightens the image. 0 is ignored.
+   */
+  gamma?: number;
+  /**
+   * Increase contrast by a factor. A value of 1.0 equals no change, a value of
+   * 0.5 equals low contrast, and a value of 2.0 equals high contrast. 0 is
+   * ignored.
+   */
+  saturation?: number;
+  /**
+   * Flips the images horizontally, vertically, or both. Flipping is applied before
+   * rotation, so if you apply flip=h,rotate=90 then the image will be flipped
+   * horizontally, then rotated by 90 degrees.
+   */
+  flip?: "h" | "v" | "hv";
+  /**
+   * Slightly reduces latency on a cache miss by selecting a
+   * quickest-to-compress file format, at a cost of increased file size and
+   * lower image quality. It will usually override the format option and choose
+   * JPEG over WebP or AVIF. We do not recommend using this option, except in
+   * unusual circumstances like resizing uncacheable dynamically-generated
+   * images.
+   */
+  compression?: "fast";
 }
 interface RequestInitCfPropertiesImageMinify {
     javascript?: boolean;
@@ -4291,31 +4298,31 @@ interface IncomingRequestCfPropertiesBase extends Record<string, unknown> {
     tlsExportedAuthenticator?: IncomingRequestCfPropertiesExportedAuthenticatorMetadata;
 }
 interface IncomingRequestCfPropertiesBotManagementBase {
-    /**
-     * Cloudflare’s [level of certainty](https://developers.cloudflare.com/bots/concepts/bot-score/) that a request comes from a bot,
-     * represented as an integer percentage between `1` (almost certainly a bot) and `99` (almost certainly human).
-     *
-     * @example 54
-     */
-    score: number;
-    /**
-     * A boolean value that is true if the request comes from a good bot, like Google or Bing.
-     * Most customers choose to allow this traffic. For more details, see [Traffic from known bots](https://developers.cloudflare.com/firewall/known-issues-and-faq/#how-does-firewall-rules-handle-traffic-from-known-bots).
-     */
-    verifiedBot: boolean;
-    /**
-     * A boolean value that is true if the request originates from a
-     * Cloudflare-verified proxy service.
-     */
-    corporateProxy: boolean;
-    /**
-     * A boolean value that's true if the request matches [file extensions](https://developers.cloudflare.com/bots/reference/static-resources/) for many types of static resources.
-     */
-    staticResource: boolean;
-    /**
-     * List of IDs that correlate to the Bot Management heuristic detections made on a request (you can have multiple heuristic detections on the same request).
-     */
-    detectionIds: number[];
+  /**
+   * Cloudflare's [level of certainty](https://developers.cloudflare.com/bots/concepts/bot-score/) that a request comes from a bot,
+   * represented as an integer percentage between `1` (almost certainly a bot) and `99` (almost certainly human).
+   *
+   * @example 54
+   */
+  score: number;
+  /**
+   * A boolean value that is true if the request comes from a good bot, like Google or Bing.
+   * Most customers choose to allow this traffic. For more details, see [Traffic from known bots](https://developers.cloudflare.com/firewall/known-issues-and-faq/#how-does-firewall-rules-handle-traffic-from-known-bots).
+   */
+  verifiedBot: boolean;
+  /**
+   * A boolean value that is true if the request originates from a
+   * Cloudflare-verified proxy service.
+   */
+  corporateProxy: boolean;
+  /**
+   * A boolean value that's true if the request matches [file extensions](https://developers.cloudflare.com/bots/reference/static-resources/) for many types of static resources.
+   */
+  staticResource: boolean;
+  /**
+   * List of IDs that correlate to the Bot Management heuristic detections made on a request (you can have multiple heuristic detections on the same request).
+   */
+  detectionIds: number[];
 }
 interface IncomingRequestCfPropertiesBotManagement {
     /**
